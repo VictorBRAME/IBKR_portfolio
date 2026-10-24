@@ -1,0 +1,5 @@
+# Raw Interactive Brokers exports: never push these
+exports/
+*.csv
+*.xml
+.DS_Store

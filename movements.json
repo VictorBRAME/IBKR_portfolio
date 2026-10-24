@@ -1,0 +1,42 @@
+[
+ {
+  "date": "2025-09-02",
+  "ticker": "EXA",
+  "name": "Société Exemple A (donnée fictive)",
+  "action": "Achat",
+  "price": 42.3,
+  "currency": "USD",
+  "weight": 8.0,
+  "reason": "Exemple : décote d’environ 30 % par rapport à la valeur estimée."
+ },
+ {
+  "date": "2025-11-14",
+  "ticker": "EXB",
+  "name": "Société Exemple B (donnée fictive)",
+  "action": "Achat",
+  "price": 118.5,
+  "currency": "EUR",
+  "weight": 6.5,
+  "reason": "Exemple : bilan solide, marges stables, cours revenu sous la valeur estimée."
+ },
+ {
+  "date": "2026-03-09",
+  "ticker": "EXA",
+  "name": "Société Exemple A (donnée fictive)",
+  "action": "Vente",
+  "price": 57.1,
+  "currency": "USD",
+  "weight": 0.0,
+  "reason": "Exemple : cours proche de la valeur estimée, marge de sécurité épuisée."
+ },
+ {
+  "date": "2026-07-21",
+  "ticker": "EXC",
+  "name": "Société Exemple C (donnée fictive)",
+  "action": "Achat",
+  "price": 23.8,
+  "currency": "CAD",
+  "weight": 5.0,
+  "reason": "Exemple : entreprise rentable dont le cours a chuté sur une mauvaise nouvelle ponctuelle."
+ }
+]

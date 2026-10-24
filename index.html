@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portefeuille value : suivi et mouvements</title>
+<meta name="description" content="Suivi public d’un petit portefeuille d’investissement value : stratégie, performance et mouvements.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--ink:#0f1b2d;--muted:#5a6678;--line:#e2e6ec;--accent:#1b4b7a;--bench:#9aa5b5;--pos:#1d6b46;--neg:#a3352b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 "IBM Plex Sans",system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:72px 24px 48px}
+h1{font:500 2.1rem/1.2 "IBM Plex Serif",Georgia,serif;letter-spacing:-.01em;margin:0 0 20px}
+h2{font:600 1.15rem/1.3 "IBM Plex Sans",system-ui,sans-serif;margin:0 0 16px}
+p{margin:0 0 14px;max-width:62ch}
+section{margin-top:64px;padding-top:32px;border-top:1px solid var(--line)}
+ul{margin:0;padding-left:1.1em;max-width:62ch}
+li{margin-bottom:6px}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:24px 20px;margin:0 0 32px}
+.kpis dt{color:var(--muted);font-size:.85rem}
+.kpis dd{margin:2px 0 0;font:500 1.5rem/1.2 "IBM Plex Sans",sans-serif;font-variant-numeric:tabular-nums}
+.kpis dd small{display:block;margin-top:2px;font-size:.8rem;font-weight:400;color:var(--muted)}
+.chart{position:relative;height:320px}
+.filters{display:flex;gap:8px;margin-bottom:16px}
+.filters button{font:inherit;font-size:.9rem;background:none;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:5px 14px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.95rem;font-variant-numeric:tabular-nums}
+th{text-align:left;font-weight:500;color:var(--muted);font-size:.85rem;border-bottom:1px solid var(--ink);padding:0 14px 8px 0;white-space:nowrap}
+td{padding:12px 14px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td.reason{min-width:220px;color:var(--muted)}
+.buy{color:var(--pos);font-weight:600}
+.sell{color:var(--neg);font-weight:600}
+a{color:var(--accent)}
+footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+@media (max-width:520px){main{padding-top:48px}h1{font-size:1.7rem}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Un petit portefeuille value, en toute transparence</h1>
+    <p>Ce portefeuille est une expérience publique : acheter des entreprises solides à un prix inférieur à leur valeur, les garder longtemps et documenter chaque décision. Il s’adresse à ceux qui investissent avec un petit capital et veulent voir la méthode appliquée en vrai.</p>
+    <ul>
+      <li>Des entreprises que je comprends, avec un modèle d’affaires durable.</li>
+      <li>Un achat seulement avec une marge de sécurité par rapport à la valeur estimée.</li>
+      <li>Peu de positions, un horizon de plusieurs années, peu de mouvements.</li>
+    </ul>
+  </header>
+
+  <section id="performance" aria-labelledby="t-perf">
+    <h2 id="t-perf">Performance</h2>
+    <dl class="kpis" id="kpis"></dl>
+    <div class="chart"><canvas id="chart" role="img" aria-label="Rendement cumulé du portefeuille comparé à son indice de référence"></canvas></div>
+    <p class="muted small" id="perf-note" style="margin-top:14px"></p>
+  </section>
+
+  <section id="mouvements" aria-labelledby="t-mv">
+    <h2 id="t-mv">Mouvements</h2>
+    <div class="filters" role="group" aria-label="Filtrer les mouvements">
+      <button type="button" data-f="all" aria-pressed="true">Tous</button>
+      <button type="button" data-f="Achat" aria-pressed="false">Achats</button>
+      <button type="button" data-f="Vente" aria-pressed="false">Ventes</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Titre</th><th>Opération</th><th>Prix</th><th>Poids</th><th>Raison</th></tr></thead>
+        <tbody id="mv-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="tracabilite" aria-labelledby="t-trace">
+    <h2 id="t-trace">Traçabilité</h2>
+    <p>Les rendements sont calculés à partir d’un export d’Interactive Brokers. Les mouvements sont saisis à la main, avec la raison de chaque décision.</p>
+    <p class="muted small" id="trace-note"></p>
+  </section>
+
+  <footer>Ce site documente une démarche personnelle. Il ne constitue pas un conseil en investissement. Les performances passées ne préjugent pas des performances futures.</footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const nf = (v, d = 1) => Math.abs(v).toLocaleString("fr-CA", {minimumFractionDigits: d, maximumFractionDigits: d});
+const pct = (v, d = 1) => (v < 0 ? "−" : "+") + nf(v, d) + " %";
+const dateFr = iso => new Date(iso + "T00:00:00").toLocaleDateString("fr-CA", {day: "numeric", month: "short", year: "numeric"});
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+
+function stats(series, key) {
+  const idx = series.map(p => 1 + p[key] / 100), n = idx.length;
+  const days = (new Date(series[n - 1].date) - new Date(series[0].date)) / 864e5;
+  const rets = idx.slice(1).map((v, i) => v / idx[i] - 1);
+  const mean = rets.reduce((a, b) => a + b, 0) / rets.length;
+  const sd = Math.sqrt(rets.reduce((a, b) => a + (b - mean) ** 2, 0) / (rets.length - 1));
+  const perYear = (n - 1) / (days / 365.25);
+  let peak = idx[0], mdd = 0;
+  idx.forEach(v => { peak = Math.max(peak, v); mdd = Math.min(mdd, v / peak - 1); });
+  return {
+    total: series[n - 1][key],
+    annual: days >= 365 ? (idx[n - 1] ** (365 / days) - 1) * 100 : null,
+    vol: sd * Math.sqrt(perYear) * 100,
+    mdd: mdd * 100
+  };
+}
+
+function renderPerf(perf) {
+  const s = perf.series, p = stats(s, "portfolio"), b = stats(s, "benchmark");
+  const item = (label, val, bench) =>
+    `<div><dt>${label}</dt><dd>${val}${bench ? `<small>${esc(perf.benchmark)} : ${bench}</small>` : ""}</dd></div>`;
+  $("#kpis").innerHTML =
+    item("Rendement cumulé", pct(p.total), pct(b.total)) +
+    item("Rendement annualisé", p.annual === null ? "—" : pct(p.annual), b.annual === null ? "" : pct(b.annual)) +
+    item("Volatilité annualisée", nf(p.vol) + " %", nf(b.vol) + " %") +
+    item("Baisse maximale", pct(p.mdd), pct(b.mdd)) +
+    item("Écart vs indice", (p.total - b.total < 0 ? "−" : "+") + nf(p.total - b.total) + " pts", "");
+  const css = getComputedStyle(document.documentElement);
+  new Chart($("#chart"), {
+    type: "line",
+    data: {
+      labels: s.map(x => x.date),
+      datasets: [
+        {label: "Portefeuille", data: s.map(x => x.portfolio), borderColor: css.getPropertyValue("--accent"), borderWidth: 2.5, pointRadius: 0, tension: 0},
+        {label: perf.benchmark, data: s.map(x => x.benchmark), borderColor: css.getPropertyValue("--bench"), borderWidth: 1.8, pointRadius: 0, tension: 0}
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: false,
+      interaction: {mode: "index", intersect: false},
+      font: {family: "IBM Plex Sans"},
+      plugins: {
+        legend: {align: "start", labels: {boxWidth: 12, boxHeight: 2, color: css.getPropertyValue("--ink")}},
+        tooltip: {callbacks: {title: i => dateFr(i[0].label), label: c => `${c.dataset.label} : ${pct(c.parsed.y)}`}}
+      },
+      scales: {
+        x: {grid: {display: false}, ticks: {maxTicksLimit: 6, color: css.getPropertyValue("--muted"), callback(v) { return dateFr(this.getLabelForValue(v)); }}},
+        y: {grid: {color: css.getPropertyValue("--line")}, border: {display: false}, ticks: {color: css.getPropertyValue("--muted"), callback: v => v + " %"}}
+      }
+    }
+  });
+  $("#perf-note").textContent = `Rendement cumulé depuis le ${dateFr(s[0].date)}, mesuré chaque semaine. Indice de référence : ${perf.benchmark}.`;
+  $("#trace-note").innerHTML = `Dernière mise à jour : ${dateFr(perf.updated)}. <a href="performance.json">Données de performance (JSON)</a> · <a href="movements.json">Mouvements (JSON)</a>`;
+}
+
+let mv = [], filter = "all";
+function renderMv() {
+  const rows = mv.filter(m => filter === "all" || m.action === filter).sort((a, b) => b.date.localeCompare(a.date));
+  $("#mv-body").innerHTML = rows.length ? rows.map(m => `<tr>
+    <td>${dateFr(m.date)}</td>
+    <td><strong>${esc(m.ticker)}</strong><br><span class="muted small">${esc(m.name)}</span></td>
+    <td class="${m.action === "Achat" ? "buy" : "sell"}">${esc(m.action)}</td>
+    <td>${nf(m.price, 2)} ${esc(m.currency)}</td>
+    <td>${nf(m.weight)} %</td>
+    <td class="reason">${esc(m.reason)}</td></tr>`).join("")
+    : `<tr><td colspan="6" class="muted">Aucun mouvement pour ce filtre.</td></tr>`;
+}
+document.querySelectorAll(".filters button").forEach(btn => btn.addEventListener("click", () => {
+  filter = btn.dataset.f;
+  document.querySelectorAll(".filters button").forEach(b => b.setAttribute("aria-pressed", b === btn));
+  renderMv();
+}));
+
+fetch("performance.json").then(r => r.json()).then(renderPerf)
+  .catch(e => { console.error(e); $("#kpis").textContent = "Données de performance indisponibles pour le moment."; });
+fetch("movements.json").then(r => r.json()).then(d => { mv = d; renderMv(); })
+  .catch(e => { console.error(e); $("#mv-body").innerHTML = `<tr><td colspan="6" class="muted">Mouvements indisponibles pour le moment.</td></tr>`; });
+</script>
+</body>
+</html>
