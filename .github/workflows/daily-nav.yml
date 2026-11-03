@@ -1,0 +1,48 @@
+name: Daily NAV
+
+on:
+  schedule:
+    - cron: "17 11 * * 1-6"   # 11:17 UTC, Monday to Saturday (after IBKR's overnight processing)
+  workflow_dispatch:          # "Run workflow" button in the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-nav
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Fetch IBKR Flex statement (NAV + deposits/withdrawals)
+        env:
+          IBKR_TOKEN: ${{ secrets.IBKR_TOKEN }}
+          IBKR_QUERY_ID: ${{ secrets.IBKR_QUERY_ID }}
+          IBKR_TOKEN_EXPIRES: ${{ vars.IBKR_TOKEN_EXPIRES }}
+        run: python3 scripts/fetch_flex.py
+
+      - name: Fetch benchmark closes
+        run: python3 scripts/fetch_benchmarks.py
+
+      - name: Build performance.json
+        run: >
+          python3 scripts/build_performance.py exports/nav.csv --merge
+          --flows exports/flows.csv --bench1 exports/bench1.csv --bench2 exports/bench2.csv
+
+      - name: Delete raw exports
+        if: always()
+        run: rm -rf exports
+
+      - name: Commit performance.json only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add performance.json
+          if git diff --cached --quiet; then echo "No change"; exit 0; fi
+          git commit -m "Daily NAV update"
+          git push

@@ -1,0 +1,7 @@
+{
+  "base": "USD",
+  "benchmark": "S&P 500",
+  "benchmark_ticker": "CSPX.L",
+  "benchmark2": "MSCI World Value Factor",
+  "benchmark2_ticker": "IWVL.L"
+}

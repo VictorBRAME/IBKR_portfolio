@@ -1,24 +1,31 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Portefeuille value : suivi et mouvements</title>
-<meta name="description" content="Suivi public d’un petit portefeuille d’investissement value : stratégie, performance et mouvements.">
+<title>Value portfolio: performance and movements</title>
+<meta name="description" content="A public, replicable value portfolio built for small investors: strategy, performance and movements.">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A portfolio built to be replicated">
+<meta property="og:description" content="A public, replicable value portfolio for small investors: holdings, performance and movements.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#fff;--ink:#0f1b2d;--muted:#5a6678;--line:#e2e6ec;--accent:#1b4b7a;--bench:#9aa5b5;--pos:#1d6b46;--neg:#a3352b}
+:root{--bg:#fff;--ink:#0f1b2d;--muted:#5a6678;--line:#e2e6ec;--accent:#1b4b7a;--bench:#9aa5b5;--bench2:#b8893a;--pos:#1d6b46;--neg:#a3352b}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 "IBM Plex Sans",system-ui,sans-serif}
 main{max-width:760px;margin:0 auto;padding:72px 24px 48px}
 h1{font:500 2.1rem/1.2 "IBM Plex Serif",Georgia,serif;letter-spacing:-.01em;margin:0 0 20px}
 h2{font:600 1.15rem/1.3 "IBM Plex Sans",system-ui,sans-serif;margin:0 0 16px}
-p{margin:0 0 14px;max-width:62ch}
+p{margin:0 0 14px}
 section{margin-top:64px;padding-top:32px;border-top:1px solid var(--line)}
-ul{margin:0;padding-left:1.1em;max-width:62ch}
+ul{margin:0;padding-left:1.1em}
 li{margin-bottom:6px}
+.logo{display:block;width:260px;max-width:80%;height:auto;margin:0 0 36px}
 .muted{color:var(--muted)}
 .small{font-size:.85rem}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:24px 20px;margin:0 0 32px}
@@ -36,61 +43,94 @@ th{text-align:left;font-weight:500;color:var(--muted);font-size:.85rem;border-bo
 td{padding:12px 14px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}
 td.reason{min-width:220px;color:var(--muted)}
 .buy{color:var(--pos);font-weight:600}
+.pos{color:var(--pos)}.neg{color:var(--neg)}
+td.w{white-space:nowrap}
+.bar{display:inline-block;width:56px;height:6px;background:var(--line);border-radius:3px;margin-right:10px;vertical-align:middle;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
 .sell{color:var(--neg);font-weight:600}
 a{color:var(--accent)}
 footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
 @media (max-width:520px){main{padding-top:48px}h1{font-size:1.7rem}}
+th.num,td.num{text-align:right}
+.filters.periods{margin-bottom:24px}
+@media print{.filters{display:none}main{padding:0;max-width:none}section{break-inside:avoid}}
 </style>
 </head>
 <body>
 <main>
   <header>
-    <h1>Un petit portefeuille value, en toute transparence</h1>
-    <p>Ce portefeuille est une expérience publique : acheter des entreprises solides à un prix inférieur à leur valeur, les garder longtemps et documenter chaque décision. Il s’adresse à ceux qui investissent avec un petit capital et veulent voir la méthode appliquée en vrai.</p>
-    <ul>
-      <li>Des entreprises que je comprends, avec un modèle d’affaires durable.</li>
-      <li>Un achat seulement avec une marge de sécurité par rapport à la valeur estimée.</li>
-      <li>Peu de positions, un horizon de plusieurs années, peu de mouvements.</li>
-    </ul>
+    <img class="logo" src="logo.png" alt="Brame Asset Management" width="260">
+    <h1>A portfolio built to be replicated</h1>
+    <p class="muted small" id="meta"></p>
+    <p>This portfolio is designed to be replicable by small investors.</p>
+    <p>Large fund managers hold many positions and often own very expensive shares, which makes replication impossible for individuals: with a small account, a single share can cost too much to respect the target weights. Nevertheless, to avoid paying excessive fees, a sufficient position size and low broker costs must be taken into account. An amount of 5,000 is therefore recommended, even though the portfolio can be replicated with much less.</p>
+    <p>The portfolio follows a value strategy, sometimes buying on exotic markets. A broker with wide geographic access, such as Interactive Brokers (IBKR), is therefore recommended to follow it.</p>
   </header>
+
+  <section id="vision" aria-labelledby="t-vision">
+    <h2 id="t-vision">Our vision</h2>
+    <p class="muted small" style="margin-top:-8px">As of Nov 2, 2026</p>
+    <p>This portfolio is built to protect and grow capital in an inflationary environment. Energy has been one of the main drivers of inflation in recent years. When inflation is driven by energy, producers benefit directly from the rise in prices. This is why most of the portfolio is built around the energy sector.</p>
+    <p><strong>A supply shock that is not over.</strong> The war in the Middle East has disrupted oil production and shipping on a scale not seen in decades. So far, the shortfall has been largely offset by coordinated releases from IEA members’ strategic reserves. These releases cannot continue indefinitely: members must hold emergency stocks equal to at least 90 days of net imports, and depleted reserves will eventually need to be refilled, adding to future demand. Meanwhile, shut-in production and damaged facilities will take time to restore. As this buffer runs down, we expect supply tightness to push energy prices, and inflation, higher.</p>
+    <p><strong>Lost refining capacity is keeping product prices high.</strong> Military strikes have damaged refineries in the Gulf and in Russia. The loss of capacity has widened refining margins and lifted the price of finished products such as diesel, jet fuel and gasoline, which feed directly into consumer prices. Because repairs take time, we expect product prices to stay elevated for longer.</p>
+    <p><strong>High public debt makes negative real rates likely.</strong> Government debt-to-GDP ratios continue to rise. We believe that, to keep this debt manageable, governments and central banks will tolerate inflation above government bond yields, which means negative real rates. This has happened before: after the Second World War, the United States and the United Kingdom reduced their debt burdens largely through decades of financial repression. In such an environment, cash and nominal bonds steadily lose purchasing power, while real assets and companies with pricing power can pass inflation through to their revenues.</p>
+    <p><strong>Energy equities tend to benefit from supply-driven inflation.</strong> When inflation comes from an energy supply shock, energy companies are on the right side of it: their selling prices rise while much of their cost base is fixed, so margins expand. Energy equities outperformed during the 1970s oil shocks and were the best-performing sector of the S&P 500 in both 2021 and 2022. This relationship holds mainly when inflation is driven by supply.</p>
+    <p><strong>A portfolio built for inflation.</strong> For these reasons, the portfolio is built for strong inflation-hedging exposure, with energy as its core.</p>
+    <p><strong>Energy holdings selected on value criteria.</strong> Within the sector, holdings are selected using value criteria: low valuation multiples, strong free cash flow and solid balance sheets. By avoiding expensive growth stocks, the portfolio has no overlap with the S&P 500 or the MSCI World, which are heavily weighted toward them. It can therefore serve as a diversifier for broad index exposure.</p>
+  </section>
 
   <section id="performance" aria-labelledby="t-perf">
     <h2 id="t-perf">Performance</h2>
+    <div class="filters periods" role="group" aria-label="Select period">
+      <button type="button" data-r="1m" aria-pressed="false">1M</button>
+      <button type="button" data-r="3m" aria-pressed="false">3M</button>
+      <button type="button" data-r="ytd" aria-pressed="false">YTD</button>
+      <button type="button" data-r="1y" aria-pressed="false">1Y</button>
+      <button type="button" data-r="all" aria-pressed="true">All</button>
+    </div>
     <dl class="kpis" id="kpis"></dl>
-    <div class="chart"><canvas id="chart" role="img" aria-label="Rendement cumulé du portefeuille comparé à son indice de référence"></canvas></div>
+    <div class="chart"><canvas id="chart" role="img" aria-label="Cumulative return of the portfolio compared with its benchmark"></canvas></div>
     <p class="muted small" id="perf-note" style="margin-top:14px"></p>
   </section>
 
+  <section id="holdings" aria-labelledby="t-hold">
+    <h2 id="t-hold">Current portfolio</h2>
+    <dl class="kpis" id="hstats"></dl>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Security</th><th>Exchange</th><th>Currency</th><th class="num">Weight</th><th class="num">Avg. cost</th><th class="num">Price</th><th class="num">Return</th></tr></thead>
+        <tbody id="hold-body"></tbody>
+      </table>
+    </div>
+    <p class="muted small" id="hold-note" style="margin-top:14px"></p>
+  </section>
+
   <section id="mouvements" aria-labelledby="t-mv">
-    <h2 id="t-mv">Mouvements</h2>
-    <div class="filters" role="group" aria-label="Filtrer les mouvements">
-      <button type="button" data-f="all" aria-pressed="true">Tous</button>
-      <button type="button" data-f="Achat" aria-pressed="false">Achats</button>
-      <button type="button" data-f="Vente" aria-pressed="false">Ventes</button>
+    <h2 id="t-mv">Movements</h2>
+    <div class="filters" id="mv-filters" role="group" aria-label="Filter movements">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="Buy" aria-pressed="false">Buys</button>
+      <button type="button" data-f="Sell" aria-pressed="false">Sells</button>
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Date</th><th>Titre</th><th>Opération</th><th>Prix</th><th>Poids</th><th>Raison</th></tr></thead>
+        <thead><tr><th>Date</th><th>Security</th><th>Action</th><th class="num">Price</th><th class="num">Weight</th><th>Rationale</th></tr></thead>
         <tbody id="mv-body"></tbody>
       </table>
     </div>
   </section>
 
-  <section id="tracabilite" aria-labelledby="t-trace">
-    <h2 id="t-trace">Traçabilité</h2>
-    <p>Les rendements sont calculés à partir d’un export d’Interactive Brokers. Les mouvements sont saisis à la main, avec la raison de chaque décision.</p>
-    <p class="muted small" id="trace-note"></p>
-  </section>
+  
 
-  <footer>Ce site documente une démarche personnelle. Il ne constitue pas un conseil en investissement. Les performances passées ne préjugent pas des performances futures.</footer>
+  <footer>This site documents a personal approach and is provided for information only. It is not investment advice, an offer or a solicitation. Positions are held in a personal account, may change without notice, and may be held by the author. Past performance does not guarantee future results, and following this portfolio will not necessarily produce the same results because of timing, fees, taxes and currency effects.</footer>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 const $ = s => document.querySelector(s);
-const nf = (v, d = 1) => Math.abs(v).toLocaleString("fr-CA", {minimumFractionDigits: d, maximumFractionDigits: d});
-const pct = (v, d = 1) => (v < 0 ? "−" : "+") + nf(v, d) + " %";
-const dateFr = iso => new Date(iso + "T00:00:00").toLocaleDateString("fr-CA", {day: "numeric", month: "short", year: "numeric"});
+const nf = (v, d = 1) => Math.abs(v).toLocaleString("en-CA", {minimumFractionDigits: d, maximumFractionDigits: d});
+const pct = (v, d = 1) => (v < 0 ? "−" : "+") + nf(v, d) + "%";
+const dateFr = iso => new Date(iso + "T00:00:00").toLocaleDateString("en-CA", {day: "numeric", month: "short", year: "numeric"});
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 
 function stats(series, key) {
@@ -110,42 +150,93 @@ function stats(series, key) {
   };
 }
 
-function renderPerf(perf) {
-  const s = perf.series, p = stats(s, "portfolio"), b = stats(s, "benchmark");
-  const item = (label, val, bench) =>
-    `<div><dt>${label}</dt><dd>${val}${bench ? `<small>${esc(perf.benchmark)} : ${bench}</small>` : ""}</dd></div>`;
+const kpi = (l, v, s) => `<div><dt>${l}</dt><dd>${v}${s ? `<small>${s}</small>` : ""}</dd></div>`;
+let perf, chart, range = "all";
+function startIdx(r) {
+  const s = perf.series, last = new Date(s[s.length - 1].date);
+  if (r === "all") return 0;
+  const from = r === "ytd" ? new Date(last.getFullYear(), 0, 1) : new Date(last - {"1m": 30, "3m": 91, "1y": 365}[r] * 864e5);
+  let i = 0; s.forEach((x, k) => { if (new Date(x.date) <= from) i = k; });
+  return i;
+}
+function rebase(s, i) {
+  const a = 1 + s[i].portfolio / 100, b = 1 + s[i].benchmark / 100, c = 1 + (s[i].benchmark2 ?? 0) / 100;
+  return s.slice(i).map(x => ({date: x.date, portfolio: ((1 + x.portfolio / 100) / a - 1) * 100,
+    benchmark: ((1 + x.benchmark / 100) / b - 1) * 100, benchmark2: ((1 + (x.benchmark2 ?? 0) / 100) / c - 1) * 100}));
+}
+function drawPerf() {
+  let s = rebase(perf.series, startIdx(range));
+  if (s.length < 3) s = perf.series;
+  const two = !!perf.benchmark2, n1 = esc(perf.benchmark), n2 = esc(perf.benchmark2 || "");
+  const p = stats(s, "portfolio"), b = stats(s, "benchmark"), c = two ? stats(s, "benchmark2") : null;
+  const sub = f => `${n1}: ${f(b)}` + (two ? `<br>${n2}: ${f(c)}` : "");
+  const gap = v => (v < 0 ? "−" : "+") + nf(v) + " pts";
   $("#kpis").innerHTML =
-    item("Rendement cumulé", pct(p.total), pct(b.total)) +
-    item("Rendement annualisé", p.annual === null ? "—" : pct(p.annual), b.annual === null ? "" : pct(b.annual)) +
-    item("Volatilité annualisée", nf(p.vol) + " %", nf(b.vol) + " %") +
-    item("Baisse maximale", pct(p.mdd), pct(b.mdd)) +
-    item("Écart vs indice", (p.total - b.total < 0 ? "−" : "+") + nf(p.total - b.total) + " pts", "");
-  const css = getComputedStyle(document.documentElement);
-  new Chart($("#chart"), {
-    type: "line",
-    data: {
-      labels: s.map(x => x.date),
-      datasets: [
-        {label: "Portefeuille", data: s.map(x => x.portfolio), borderColor: css.getPropertyValue("--accent"), borderWidth: 2.5, pointRadius: 0, tension: 0},
-        {label: perf.benchmark, data: s.map(x => x.benchmark), borderColor: css.getPropertyValue("--bench"), borderWidth: 1.8, pointRadius: 0, tension: 0}
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false, animation: false,
-      interaction: {mode: "index", intersect: false},
-      font: {family: "IBM Plex Sans"},
-      plugins: {
-        legend: {align: "start", labels: {boxWidth: 12, boxHeight: 2, color: css.getPropertyValue("--ink")}},
-        tooltip: {callbacks: {title: i => dateFr(i[0].label), label: c => `${c.dataset.label} : ${pct(c.parsed.y)}`}}
-      },
-      scales: {
-        x: {grid: {display: false}, ticks: {maxTicksLimit: 6, color: css.getPropertyValue("--muted"), callback(v) { return dateFr(this.getLabelForValue(v)); }}},
-        y: {grid: {color: css.getPropertyValue("--line")}, border: {display: false}, ticks: {color: css.getPropertyValue("--muted"), callback: v => v + " %"}}
-      }
-    }
-  });
-  $("#perf-note").textContent = `Rendement cumulé depuis le ${dateFr(s[0].date)}, mesuré chaque semaine. Indice de référence : ${perf.benchmark}.`;
-  $("#trace-note").innerHTML = `Dernière mise à jour : ${dateFr(perf.updated)}. <a href="performance.json">Données de performance (JSON)</a> · <a href="movements.json">Mouvements (JSON)</a>`;
+    kpi("Cumulative return", pct(p.total), sub(x => pct(x.total))) +
+    kpi("Annualized return", p.annual === null ? "—" : pct(p.annual), b.annual === null ? "" : sub(x => pct(x.annual))) +
+    kpi("Annualized volatility", nf(p.vol) + "%", sub(x => nf(x.vol) + "%")) +
+    kpi("Maximum drawdown", pct(p.mdd), sub(x => pct(x.mdd))) +
+    kpi(`Gap vs ${n1}`, gap(p.total - b.total), "") +
+    (two ? kpi(`Gap vs ${n2}`, gap(p.total - c.total), "") : "");
+  const sets = [["Portfolio", "portfolio", "--accent", 2.5], [perf.benchmark, "benchmark", "--bench", 1.8]];
+  if (two) sets.push([perf.benchmark2, "benchmark2", "--bench2", 1.8]);
+  const css = getComputedStyle(document.documentElement), v = n => css.getPropertyValue(n);
+  const labels = s.map(x => x.date);
+  const ds = sets.map(([label, key, col, w]) => ({label, data: s.map(x => x[key]), borderColor: v(col), borderWidth: w, pointRadius: 0, tension: 0}));
+  if (chart) {
+    chart.data.labels = labels; chart.data.datasets = ds; chart.update();
+  } else {
+    chart = new Chart($("#chart"), {
+      type: "line",
+      data: {labels, datasets: ds},
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        interaction: {mode: "index", intersect: false}, font: {family: "IBM Plex Sans"},
+        plugins: {legend: {align: "start", labels: {boxWidth: 12, boxHeight: 2, color: v("--ink")}},
+          tooltip: {callbacks: {title: i => dateFr(i[0].label), label: k => `${k.dataset.label}: ${pct(k.parsed.y)}`}}},
+        scales: {
+          x: {grid: {display: false}, ticks: {maxTicksLimit: 6, color: v("--muted"), callback(t) { return dateFr(this.getLabelForValue(t)); }}},
+          y: {grid: {color: v("--line")}, border: {display: false}, ticks: {color: v("--muted"), callback: t => t + "%"}}}}
+    });
+  }
+  $("#perf-note").textContent = `Cumulative return since ${dateFr(s[0].date)}, based on daily closes. Benchmark${two ? "s" : ""}: ${perf.benchmark}${two ? " and " + perf.benchmark2 : ""}.`;
+}
+function renderPerf(p) {
+  perf = p;
+  $("#meta").textContent = `Tracking since ${dateFr(p.series[0].date)}. Last updated ${dateFr(p.updated)}.`;
+  if (p.series.length < 5) {
+    document.querySelector(".chart").style.display = "none";
+    document.querySelector(".periods").style.display = "none";
+    $("#kpis").innerHTML = "";
+    $("#perf-note").textContent = `Tracking started on ${dateFr(p.series[0].date)}. The chart and indicators will appear after a few trading days.`;
+    return;
+  }
+  drawPerf();
+}
+document.querySelectorAll(".periods button").forEach(btn => btn.addEventListener("click", () => {
+  range = btn.dataset.r;
+  document.querySelectorAll(".periods button").forEach(b => b.setAttribute("aria-pressed", b === btn));
+  if (perf) drawPerf();
+}));
+
+function renderHoldings(h) {
+  if (!h.positions.length) {
+    $("#hstats").innerHTML = "";
+    $("#hold-body").innerHTML = `<tr><td colspan="7" class="muted">No positions yet.</td></tr>`;
+    $("#hold-note").textContent = "";
+    return;
+  }
+  const P = h.positions, max = Math.max(...P.map(p => p.weight)), top3 = P.slice(0, 3).reduce((a, p) => a + p.weight, 0);
+  $("#hstats").innerHTML = kpi("Positions", P.length, "") + kpi("Top 3 weight", nf(top3) + "%", "") + kpi("Cash", nf(h.cash) + "%", "") +
+    kpi("Minimum account to replicate", `${esc(h.base)} ${nf(h.min_account, 0)}`, `Set by ${esc(h.min_driver)}`);
+  $("#hold-body").innerHTML = P.map(p => `<tr>
+    <td><strong>${esc(p.ticker)}</strong><br><span class="muted small">${esc(p.name)}${p.sector || p.isin ? `<br>${[p.sector, p.isin].filter(Boolean).map(esc).join(" · ")}` : ""}</span></td>
+    <td>${esc(p.exchange)}</td><td>${esc(p.currency)}</td>
+    <td class="w num"><span class="bar"><i style="width:${(p.weight / max * 100).toFixed(0)}%"></i></span>${nf(p.weight)}%</td>
+    <td class="num">${nf(p.avg_cost, 2)}</td><td class="num">${nf(p.price, 2)}</td>
+    <td class="num ${p.return_pct >= 0 ? "pos" : "neg"}">${pct(p.return_pct)}</td></tr>`).join("") +
+    `<tr><td><strong>Cash</strong></td><td></td><td></td><td class="w num">${nf(h.cash)}%</td><td></td><td></td><td></td></tr>`;
+  $("#hold-note").textContent = `As of ${dateFr(h.updated)}. Weights are a percentage of net asset value. Return is the unrealized price return in each security’s own currency and excludes currency effects. At the minimum account size, every position can be held at its target weight with at least one whole share; a larger account gets closer to the exact weights.`;
 }
 
 let mv = [], filter = "all";
@@ -154,22 +245,24 @@ function renderMv() {
   $("#mv-body").innerHTML = rows.length ? rows.map(m => `<tr>
     <td>${dateFr(m.date)}</td>
     <td><strong>${esc(m.ticker)}</strong><br><span class="muted small">${esc(m.name)}</span></td>
-    <td class="${m.action === "Achat" ? "buy" : "sell"}">${esc(m.action)}</td>
-    <td>${nf(m.price, 2)} ${esc(m.currency)}</td>
-    <td>${nf(m.weight)} %</td>
+    <td class="${m.action === "Buy" ? "buy" : "sell"}">${esc(m.action)}</td>
+    <td class="num">${nf(m.price, 2)} ${esc(m.currency)}</td>
+    <td class="num">${m.weight == null ? "—" : nf(m.weight) + "%"}</td>
     <td class="reason">${esc(m.reason)}</td></tr>`).join("")
-    : `<tr><td colspan="6" class="muted">Aucun mouvement pour ce filtre.</td></tr>`;
+    : `<tr><td colspan="6" class="muted">No movements for this filter.</td></tr>`;
 }
-document.querySelectorAll(".filters button").forEach(btn => btn.addEventListener("click", () => {
+document.querySelectorAll("#mv-filters button").forEach(btn => btn.addEventListener("click", () => {
   filter = btn.dataset.f;
-  document.querySelectorAll(".filters button").forEach(b => b.setAttribute("aria-pressed", b === btn));
+  document.querySelectorAll("#mv-filters button").forEach(b => b.setAttribute("aria-pressed", b === btn));
   renderMv();
 }));
 
 fetch("performance.json").then(r => r.json()).then(renderPerf)
-  .catch(e => { console.error(e); $("#kpis").textContent = "Données de performance indisponibles pour le moment."; });
+  .catch(e => { console.error(e); $("#kpis").textContent = "Performance data is currently unavailable."; });
+fetch("holdings.json").then(r => r.json()).then(renderHoldings)
+  .catch(e => { console.error(e); $("#hold-body").innerHTML = `<tr><td colspan="7" class="muted">Holdings are currently unavailable.</td></tr>`; });
 fetch("movements.json").then(r => r.json()).then(d => { mv = d; renderMv(); })
-  .catch(e => { console.error(e); $("#mv-body").innerHTML = `<tr><td colspan="6" class="muted">Mouvements indisponibles pour le moment.</td></tr>`; });
+  .catch(e => { console.error(e); $("#mv-body").innerHTML = `<tr><td colspan="6" class="muted">Movements are currently unavailable.</td></tr>`; });
 </script>
 </body>
 </html>
