@@ -1,1 +1,1 @@
-{"updated": "2026-11-02", "benchmark": "S&P 500", "benchmark2": "MSCI World Value Factor", "series": [{"date": "2026-11-02", "portfolio": 0.0, "benchmark": 0.0, "benchmark2": 0.0}]}
+{"updated": "2026-11-03", "benchmark": "S&P 500", "benchmark2": "MSCI World Value Factor", "series": [{"date": "2026-11-02", "portfolio": 0.0, "benchmark": 0.0, "benchmark2": 0.0}, {"date": "2026-11-03", "portfolio": 0.045, "benchmark": -0.792, "benchmark2": -0.904}]}
