@@ -1,0 +1,42 @@
+[
+ {
+  "date": "2026-11-05",
+  "ticker": "EC",
+  "name": "Totalenergies EP Gabon",
+  "action": "Buy",
+  "price": 228.0,
+  "currency": "EUR"
+ },
+ {
+  "date": "2026-11-10",
+  "ticker": "ENOG",
+  "name": "Energean PLC",
+  "action": "Buy",
+  "price": 7.0,
+  "currency": "GBP"
+ },
+ {
+  "date": "2026-11-10",
+  "ticker": "MAU",
+  "name": "Maurel et Prom",
+  "action": "Buy",
+  "price": 6.99,
+  "currency": "EUR"
+ },
+ {
+  "date": "2026-11-10",
+  "ticker": "SER",
+  "name": "Serica Energy PLC",
+  "action": "Buy",
+  "price": 2.202,
+  "currency": "GBP"
+ },
+ {
+  "date": "2026-11-10",
+  "ticker": "VK",
+  "name": "Vallourec SA",
+  "action": "Buy",
+  "price": 19.405,
+  "currency": "EUR"
+ }
+]

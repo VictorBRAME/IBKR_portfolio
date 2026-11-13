@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brame Investment — Value portfolio</title>
+<meta name="description" content="A public value portfolio, replicable with a small account: strategy, performance and movements.">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Brame Investment">
+<meta property="og:url" content="https://victorbrame.github.io/BRAME_Investment/">
+<meta property="og:title" content="A portfolio built to be replicable">
+<meta property="og:description" content="A public value portfolio, replicable with a small account: holdings, performance and movements.">
+<meta property="og:image" content="https://victorbrame.github.io/BRAME_Investment/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Brame Investment">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--ink:#0f1b2d;--muted:#5a6678;--line:#e2e6ec;--accent:#1b4b7a;--bench:#9aa5b5;--bench2:#b8893a;--pos:#1d6b46;--neg:#a3352b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 "IBM Plex Sans",system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:72px 24px 48px}
+h1{font:500 2.1rem/1.2 "IBM Plex Serif",Georgia,serif;letter-spacing:-.01em;margin:0 0 20px}
+h2{font:600 1.15rem/1.3 "IBM Plex Sans",system-ui,sans-serif;margin:0 0 16px}
+p{margin:0 0 14px}
+ul{margin:0 0 14px;padding-left:1.1em}
+li{margin-bottom:6px}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section{margin-top:64px;padding-top:32px;border-top:1px solid var(--line)}
+.logo{display:block;width:260px;max-width:80%;height:auto;margin:0 0 36px}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.asof{margin-top:-8px}
+.note{margin-top:14px}
+.pos{color:var(--pos)}
+.neg{color:var(--neg)}
+/* indicators */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:24px 20px;margin:0 0 32px}
+.kpis dt{color:var(--muted);font-size:.85rem}
+.kpis dd{margin:2px 0 0;font:500 1.5rem/1.2 "IBM Plex Sans",sans-serif;font-variant-numeric:tabular-nums}
+.kpis dd small{display:block;margin-top:2px;font-size:.8rem;font-weight:400;color:var(--muted)}
+.chart{position:relative;height:320px}
+/* filter buttons */
+.filters{display:flex;gap:8px;margin-bottom:16px}
+.filters.periods{margin-bottom:24px}
+.filters button{font:inherit;font-size:.9rem;background:none;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:5px 14px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+/* tables */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.95rem;font-variant-numeric:tabular-nums}
+th{text-align:left;font-weight:500;color:var(--muted);font-size:.85rem;border-bottom:1px solid var(--ink);padding:0 14px 8px 0;white-space:nowrap}
+td{padding:12px 14px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+th.num,td.num{text-align:right}
+td.w{white-space:nowrap}
+.bar{display:inline-block;width:56px;height:6px;background:var(--line);border-radius:3px;margin-right:10px;vertical-align:middle;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.buy{color:var(--pos);font-weight:600}
+.sell{color:var(--neg);font-weight:600}
+footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+footer p{margin:0 0 10px}
+@media (max-width:520px){main{padding-top:48px}h1{font-size:1.7rem}}
+@media print{.filters{display:none}main{padding:0;max-width:none}section{break-inside:avoid}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img class="logo" src="logo.png" alt="Brame Investment" width="260">
+    <h1>A portfolio built to be replicable</h1>
+    <p class="muted small" id="meta"></p>
+    <p>Large fund managers hold many positions and often own very expensive shares, which makes replication impossible for most individuals. Nevertheless, to avoid paying excessive fees, low broker costs and a sufficient position size must be taken into account. An amount of around 5,000 USD is therefore enough to keep fees low, even though the portfolio can be replicated with much less.</p>
+    <p>The portfolio follows a value strategy, sometimes buying on exotic markets. Following it therefore requires a broker with wide geographic access, such as Interactive Brokers (IBKR), where the portfolio is held.</p>
+  </header>
+
+  <section id="vision" aria-labelledby="t-vision">
+    <h2 id="t-vision">Our vision</h2>
+    <p class="muted small asof">As of Nov 2, 2026</p>
+    <p>We expect inflation to remain elevated over the coming years, for two main reasons.</p>
+    <p><strong>1. Energy supply is fragile.</strong> The world still depends on fossil fuels for 86% of its energy: oil (33%), coal (28%) and natural gas (25%). Yet years of underinvestment and fast-declining oil fields leave production with little room to respond, and new capacity takes years to build. The war in the Middle East has shown how quickly prices react when supply is disrupted:</p>
+    <ul>
+      <li>Disruptions to oil production and shipping have been offset so far by record releases from strategic reserves, which cannot last indefinitely and will eventually need to be refilled.</li>
+      <li>Strikes on refineries in the Gulf and in Russia have lifted the price of refined products, which feed directly into consumer prices.</li>
+    </ul>
+    <p><strong>2. High public debt.</strong> Government debt keeps rising. Over time, this creates pressure to tolerate inflation above bond yields, as after the Second World War, when negative real rates eroded the real value of government debt and the purchasing power of savers.</p>
+    <p>The portfolio is therefore built to protect purchasing power and grow capital in an inflationary environment. Stock selection follows two main criteria: companies that benefit from supply-driven inflation, which is why energy is at the core of the portfolio, and value criteria such as low valuation multiples, strong free cash flow and solid balance sheets.</p>
+    <p>The portfolio can stand on its own or serve to diversify an existing savings allocation.</p>
+  </section>
+
+  <section id="performance" aria-labelledby="t-perf">
+    <h2 id="t-perf">Performance</h2>
+    <div class="filters periods" role="group" aria-label="Select period">
+      <button type="button" data-r="1m" aria-pressed="false">1M</button>
+      <button type="button" data-r="3m" aria-pressed="false">3M</button>
+      <button type="button" data-r="ytd" aria-pressed="false">YTD</button>
+      <button type="button" data-r="1y" aria-pressed="false">1Y</button>
+      <button type="button" data-r="all" aria-pressed="true">All</button>
+    </div>
+    <dl class="kpis" id="kpis"></dl>
+    <div class="chart"><canvas id="chart" role="img" aria-label="Cumulative return of the portfolio compared with its benchmark"></canvas></div>
+    <p class="muted small note" id="perf-note"></p>
+  </section>
+
+  <section id="holdings" aria-labelledby="t-hold">
+    <h2 id="t-hold">Current portfolio</h2>
+    <dl class="kpis" id="hstats"></dl>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Security</th><th>Exchange</th><th>Currency</th><th class="num">Weight</th><th class="num">Avg. cost</th><th class="num">Price</th><th class="num">Return</th></tr></thead>
+        <tbody id="hold-body"></tbody>
+      </table>
+    </div>
+    <p class="muted small note" id="hold-note"></p>
+  </section>
+
+  <section id="movements" aria-labelledby="t-mv">
+    <h2 id="t-mv">Movements</h2>
+    <div class="filters" id="mv-filters" role="group" aria-label="Filter movements">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="Buy" aria-pressed="false">Buys</button>
+      <button type="button" data-f="Sell" aria-pressed="false">Sells</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Security</th><th>Action</th><th class="num">Price</th></tr></thead>
+        <tbody id="mv-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Important information</strong></p>
+    <p>This site presents a personal portfolio held by its author, an individual investor, not a licensed adviser. It is published for information only. It is not investment advice, a recommendation, an offer or a solicitation to buy or sell any security, and it does not take into account anyone's personal situation.</p>
+    <p><strong>Conflicts of interest.</strong> The author holds all positions shown and may buy or sell them at any time without notice. Trades and positions are published automatically on the day following execution, never before, subject to connection issues with the broker or other technical problems that may delay an update. The author receives no compensation from any company, broker or fund mentioned.</p>
+    <p><strong>Risks.</strong> The portfolio is concentrated in a small number of stocks, mainly in the energy sector, some of them small companies listed on less liquid markets. Their prices can move sharply and you may lose a large part of the capital invested. Performance is shown in USD while some holdings are quoted in other currencies, so exchange rates affect the results.</p>
+    <p><strong>Performance.</strong> The track record started on Nov 2, 2026 and is too short to be meaningful. Past performance does not guarantee future results. Following this portfolio will not necessarily produce the same results, because of timing, fees, taxes and currency effects.</p>
+    <p>Make your own decisions, and consult a licensed adviser if needed.</p>
+  </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const nf = (v, d = 1) => Math.abs(v).toLocaleString("en-CA", {minimumFractionDigits: d, maximumFractionDigits: d});
+const pct = (v, d = 1) => (v < 0 ? "−" : "+") + nf(v, d) + "%";
+const fmtDate = iso => new Date(iso + "T00:00:00").toLocaleDateString("en-CA", {day: "numeric", month: "short", year: "numeric"});
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+
+function stats(series, key) {
+  const idx = series.map(p => 1 + p[key] / 100), n = idx.length;
+  const days = (new Date(series[n - 1].date) - new Date(series[0].date)) / 864e5;
+  const rets = idx.slice(1).map((v, i) => v / idx[i] - 1);
+  const mean = rets.reduce((a, b) => a + b, 0) / rets.length;
+  const sd = Math.sqrt(rets.reduce((a, b) => a + (b - mean) ** 2, 0) / (rets.length - 1));
+  const perYear = (n - 1) / (days / 365.25);
+  let peak = idx[0], mdd = 0;
+  idx.forEach(v => { peak = Math.max(peak, v); mdd = Math.min(mdd, v / peak - 1); });
+  return {
+    total: series[n - 1][key],
+    annual: days >= 365 ? (idx[n - 1] ** (365 / days) - 1) * 100 : null,
+    vol: sd * Math.sqrt(perYear) * 100,
+    mdd: mdd * 100
+  };
+}
+
+const kpi = (l, v, s) => `<div><dt>${l}</dt><dd>${v}${s ? `<small>${s}</small>` : ""}</dd></div>`;
+let perf, chart, range = "all";
+function startIdx(r) {
+  const s = perf.series, last = new Date(s[s.length - 1].date);
+  if (r === "all") return 0;
+  const from = r === "ytd" ? new Date(last.getFullYear(), 0, 1) : new Date(last - {"1m": 30, "3m": 91, "1y": 365}[r] * 864e5);
+  let i = 0; s.forEach((x, k) => { if (new Date(x.date) <= from) i = k; });
+  return i;
+}
+function rebase(s, i) {
+  const a = 1 + s[i].portfolio / 100, b = 1 + s[i].benchmark / 100, c = 1 + (s[i].benchmark2 ?? 0) / 100;
+  return s.slice(i).map(x => ({date: x.date, portfolio: ((1 + x.portfolio / 100) / a - 1) * 100,
+    benchmark: ((1 + x.benchmark / 100) / b - 1) * 100, benchmark2: ((1 + (x.benchmark2 ?? 0) / 100) / c - 1) * 100}));
+}
+function drawPerf() {
+  let s = rebase(perf.series, startIdx(range));
+  if (s.length < 3) s = perf.series;
+  const two = !!perf.benchmark2, n1 = esc(perf.benchmark), n2 = esc(perf.benchmark2 || "");
+  const p = stats(s, "portfolio"), b = stats(s, "benchmark"), c = two ? stats(s, "benchmark2") : null;
+  const sub = f => `${n1}: ${f(b)}` + (two ? `<br>${n2}: ${f(c)}` : "");
+  const gap = v => (v < 0 ? "−" : "+") + nf(v) + " pts";
+  $("#kpis").innerHTML =
+    kpi("Cumulative return", pct(p.total), sub(x => pct(x.total))) +
+    kpi("Annualized return", p.annual === null ? "—" : pct(p.annual), b.annual === null ? "" : sub(x => pct(x.annual))) +
+    kpi("Annualized volatility", nf(p.vol) + "%", sub(x => nf(x.vol) + "%")) +
+    kpi("Maximum drawdown", pct(p.mdd), sub(x => pct(x.mdd))) +
+    kpi(`Gap vs ${n1}`, gap(p.total - b.total), "") +
+    (two ? kpi(`Gap vs ${n2}`, gap(p.total - c.total), "") : "");
+  const sets = [["Portfolio", "portfolio", "--accent", 2.5], [perf.benchmark, "benchmark", "--bench", 1.8]];
+  if (two) sets.push([perf.benchmark2, "benchmark2", "--bench2", 1.8]);
+  const css = getComputedStyle(document.documentElement), v = n => css.getPropertyValue(n);
+  const labels = s.map(x => x.date);
+  const ds = sets.map(([label, key, col, w]) => ({label, data: s.map(x => x[key]), borderColor: v(col), borderWidth: w, pointRadius: 0, tension: 0}));
+  if (chart) {
+    chart.data.labels = labels; chart.data.datasets = ds; chart.update();
+  } else {
+    chart = new Chart($("#chart"), {
+      type: "line",
+      data: {labels, datasets: ds},
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        interaction: {mode: "index", intersect: false}, font: {family: "IBM Plex Sans"},
+        plugins: {legend: {align: "start", labels: {boxWidth: 12, boxHeight: 2, color: v("--ink")}},
+          tooltip: {callbacks: {title: i => fmtDate(i[0].label), label: k => `${k.dataset.label}: ${pct(k.parsed.y)}`}}},
+        scales: {
+          x: {grid: {display: false}, ticks: {maxTicksLimit: 6, color: v("--muted"), callback(t) { return fmtDate(this.getLabelForValue(t)); }}},
+          y: {grid: {color: v("--line")}, border: {display: false}, ticks: {color: v("--muted"), callback: t => t + "%"}}}}
+    });
+  }
+  $("#perf-note").textContent = `Cumulative return since ${fmtDate(s[0].date)}, based on daily closes. Benchmark${two ? "s" : ""}: ${perf.benchmark}${two ? " and " + perf.benchmark2 : ""}.`;
+}
+function renderPerf(p) {
+  perf = p;
+  $("#meta").textContent = `Tracking since ${fmtDate(p.series[0].date)}. Last updated ${fmtDate(p.updated)}.`;
+  if (p.series.length < 5) {
+    document.querySelector(".chart").style.display = "none";
+    document.querySelector(".periods").style.display = "none";
+    $("#kpis").innerHTML = "";
+    $("#perf-note").textContent = `Tracking started on ${fmtDate(p.series[0].date)}. The chart and indicators will appear after a few trading days.`;
+    return;
+  }
+  drawPerf();
+}
+document.querySelectorAll(".periods button").forEach(btn => btn.addEventListener("click", () => {
+  range = btn.dataset.r;
+  document.querySelectorAll(".periods button").forEach(b => b.setAttribute("aria-pressed", b === btn));
+  if (perf) drawPerf();
+}));
+
+function renderHoldings(h) {
+  if (!h.positions.length) {
+    $("#hstats").innerHTML = "";
+    $("#hold-body").innerHTML = `<tr><td colspan="7" class="muted">No positions yet.</td></tr>`;
+    $("#hold-note").textContent = "";
+    return;
+  }
+  const P = h.positions, max = Math.max(...P.map(p => p.weight)), top3 = P.slice(0, 3).reduce((a, p) => a + p.weight, 0);
+  $("#hstats").innerHTML = kpi("Positions", P.length, "") + kpi("Top 3 weight", nf(top3) + "%", "") + kpi("Cash", nf(h.cash) + "%", "");
+  $("#hold-body").innerHTML = P.map(p => `<tr>
+    <td><strong>${esc(p.ticker)}</strong><br><span class="muted small">${esc(p.name)}${p.isin ? `<br>${esc(p.isin)}` : ""}</span></td>
+    <td>${esc(p.exchange)}</td><td>${esc(p.currency)}</td>
+    <td class="w num"><span class="bar"><i style="width:${(p.weight / max * 100).toFixed(0)}%"></i></span>${nf(p.weight)}%</td>
+    <td class="num">${nf(p.avg_cost, 2)}</td><td class="num">${nf(p.price, 2)}</td>
+    <td class="num ${p.return_pct >= 0 ? "pos" : "neg"}">${pct(p.return_pct)}</td></tr>`).join("") +
+    `<tr><td><strong>Cash</strong></td><td></td><td></td><td class="w num">${nf(h.cash)}%</td><td></td><td></td><td></td></tr>`;
+  $("#hold-note").textContent = `As of ${fmtDate(h.updated)}. Weights are a percentage of net asset value. Return is the unrealized price return in each security’s own currency and excludes currency effects.`;
+}
+
+let mv = [], filter = "all";
+function renderMv() {
+  const rows = mv.filter(m => filter === "all" || m.action === filter).sort((a, b) => b.date.localeCompare(a.date));
+  $("#mv-body").innerHTML = rows.length ? rows.map(m => `<tr>
+    <td>${fmtDate(m.date)}</td>
+    <td><strong>${esc(m.ticker)}</strong><br><span class="muted small">${esc(m.name)}</span></td>
+    <td class="${m.action === "Buy" ? "buy" : "sell"}">${esc(m.action)}</td>
+    <td class="num">${nf(m.price, 2)} ${esc(m.currency)}</td></tr>`).join("")
+    : `<tr><td colspan="4" class="muted">No movements for this filter.</td></tr>`;
+}
+document.querySelectorAll("#mv-filters button").forEach(btn => btn.addEventListener("click", () => {
+  filter = btn.dataset.f;
+  document.querySelectorAll("#mv-filters button").forEach(b => b.setAttribute("aria-pressed", b === btn));
+  renderMv();
+}));
+
+fetch("performance.json").then(r => r.json()).then(renderPerf)
+  .catch(e => { console.error(e); $("#kpis").textContent = "Performance data is currently unavailable."; });
+fetch("holdings.json").then(r => r.json()).then(renderHoldings)
+  .catch(e => { console.error(e); $("#hold-body").innerHTML = `<tr><td colspan="7" class="muted">Holdings are currently unavailable.</td></tr>`; });
+fetch("movements.json").then(r => r.json()).then(d => { mv = d; renderMv(); })
+  .catch(e => { console.error(e); $("#mv-body").innerHTML = `<tr><td colspan="4" class="muted">Movements are currently unavailable.</td></tr>`; });
+</script>
+</body>
+</html>

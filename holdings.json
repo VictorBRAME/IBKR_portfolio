@@ -1,0 +1,62 @@
+{
+ "updated": "2026-11-12",
+ "base": "USD",
+ "cash": 0.95,
+ "positions": [
+  {
+   "ticker": "SER",
+   "name": "Serica Energy PLC",
+   "isin": "GB00B0CY5V57",
+   "exchange": "LSE",
+   "currency": "GBP",
+   "weight": 23.45,
+   "avg_cost": 2.2153,
+   "price": 2.262,
+   "return_pct": 2.11
+  },
+  {
+   "ticker": "MAU",
+   "name": "Maurel et Prom",
+   "isin": "FR0000051070",
+   "exchange": "SBF",
+   "currency": "EUR",
+   "weight": 19.65,
+   "avg_cost": 7.0323,
+   "price": 7.19,
+   "return_pct": 2.24
+  },
+  {
+   "ticker": "VK",
+   "name": "Vallourec SA",
+   "isin": "FR0013506730",
+   "exchange": "SBF",
+   "currency": "EUR",
+   "weight": 19.42,
+   "avg_cost": 19.5204,
+   "price": 19.405,
+   "return_pct": -0.59
+  },
+  {
+   "ticker": "ENOG",
+   "name": "Energean PLC",
+   "isin": "GB00BG12Y042",
+   "exchange": "LSE",
+   "currency": "GBP",
+   "weight": 19.14,
+   "avg_cost": 7.085,
+   "price": 6.925,
+   "return_pct": -2.26
+  },
+  {
+   "ticker": "EC",
+   "name": "Totalenergies EP Gabon",
+   "isin": "GA0000121459",
+   "exchange": "SBF",
+   "currency": "EUR",
+   "weight": 17.39,
+   "avg_cost": 229.5,
+   "price": 226.0,
+   "return_pct": -1.53
+  }
+ ]
+}

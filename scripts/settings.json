@@ -1,0 +1,7 @@
+{
+  "base": "USD",
+  "benchmark": "S&P 500",
+  "benchmark_ticker": "CSPX.L",
+  "benchmark2": "S&P Oil & Gas E&P",
+  "benchmark2_ticker": "XOP"
+}

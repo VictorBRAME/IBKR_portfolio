@@ -1,0 +1,6 @@
+# Raw Interactive Brokers exports: never push these
+exports/
+*.csv
+*.xml
+__pycache__/
+.DS_Store
