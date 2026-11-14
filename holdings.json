@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12",
+ "updated": "2026-11-13",
  "base": "USD",
  "cash": 0.95,
  "positions": [
@@ -9,10 +9,10 @@
    "isin": "GB00B0CY5V57",
    "exchange": "LSE",
    "currency": "GBP",
-   "weight": 23.45,
+   "weight": 23.4,
    "avg_cost": 2.2153,
-   "price": 2.262,
-   "return_pct": 2.11
+   "price": 2.256,
+   "return_pct": 1.84
   },
   {
    "ticker": "MAU",
@@ -20,10 +20,10 @@
    "isin": "FR0000051070",
    "exchange": "SBF",
    "currency": "EUR",
-   "weight": 19.65,
+   "weight": 19.67,
    "avg_cost": 7.0323,
-   "price": 7.19,
-   "return_pct": 2.24
+   "price": 7.205,
+   "return_pct": 2.46
   },
   {
    "ticker": "VK",
@@ -31,10 +31,10 @@
    "isin": "FR0013506730",
    "exchange": "SBF",
    "currency": "EUR",
-   "weight": 19.42,
+   "weight": 19.27,
    "avg_cost": 19.5204,
-   "price": 19.405,
-   "return_pct": -0.59
+   "price": 19.27,
+   "return_pct": -1.28
   },
   {
    "ticker": "ENOG",
@@ -42,10 +42,10 @@
    "isin": "GB00BG12Y042",
    "exchange": "LSE",
    "currency": "GBP",
-   "weight": 19.14,
+   "weight": 19.21,
    "avg_cost": 7.085,
-   "price": 6.925,
-   "return_pct": -2.26
+   "price": 6.945,
+   "return_pct": -1.98
   },
   {
    "ticker": "EC",
@@ -53,10 +53,10 @@
    "isin": "GA0000121459",
    "exchange": "SBF",
    "currency": "EUR",
-   "weight": 17.39,
+   "weight": 17.5,
    "avg_cost": 229.5,
-   "price": 226.0,
-   "return_pct": -1.53
+   "price": 227.5,
+   "return_pct": -0.87
   }
  ]
 }
